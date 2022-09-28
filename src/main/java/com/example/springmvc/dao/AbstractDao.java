@@ -1,5 +1,7 @@
 package com.example.springmvc.dao;
 
+import org.springframework.transaction.annotation.Transactional;
+
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.criteria.CriteriaBuilder;
@@ -12,6 +14,7 @@ import java.util.List;
 //JPQL https://docs.oracle.com/javaee/7/tutorial/persistence-querylanguage.htm
 //CRITERIA API https://docs.oracle.com/javaee/7/tutorial/persistence-criteria.htm
 
+@Transactional
 public abstract class AbstractDao<I extends Serializable, Id extends Serializable>
 	implements GenericRepository<I, Id>
 {
@@ -60,6 +63,7 @@ public abstract class AbstractDao<I extends Serializable, Id extends Serializabl
 	}
 	
 	@Override
+	@Transactional
 	public void Aggiorna(I entity)
 	{
 		this.entityManager.merge(entity); 
@@ -90,7 +94,8 @@ public abstract class AbstractDao<I extends Serializable, Id extends Serializabl
 		
 		flushAndClear();
 	}
-	
+
+
 	private void flushAndClear() 
 	{
 	    entityManager.flush();

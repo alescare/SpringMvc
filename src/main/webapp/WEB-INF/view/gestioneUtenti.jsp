@@ -9,20 +9,19 @@
     <c:if test="${utente} == null">
         Utente non inserito
     </c:if>
-    <form action="UtenteServlet" method="post">
+    <form:form action="aggiungi_utente" method="post" modelAttribute="nuovoUtente">
         Nome:<br/>
-        <input type="text" name="nome"><br/><br/>
+        <form:input type="text" path="nome"></form:input><br/><br/>
         Cognome:<br/>
-        <input type="text" name="cognome"> <br/><br/>
+        <form:input type="text" path="cognome"></form:input><br/><br/>
         Username:<br/>
-        <input type="text" name="username"> <br/><br/>
+        <form:input type="text" path="username"></form:input><br/><br/>
         Password:<br/>
-        <input type="password" name="password"> <br/><br/>
+        <form:input type="password" path="password"></form:input><br/><br/>
         Data di nascita:<br/>
-        <input type="date" name="dataNascita"><br/><br/>
-        <input type="hidden" name="azione" value="aggiungi utente">
-        <input type="submit" value="Aggiungi">
-    </form>
+        <form:input type="date" path="dataNascita"></form:input><br/><br/>
+        <button type="submit">Aggiungi</button>
+    </form:form>
 </div>
 
 <hr>
@@ -47,11 +46,9 @@
                 </td>
                 <td>${utente.username}</td>
                 <td>
-                    <form action="UtenteServlet" method="post">
-                        <input type="hidden" name="idUtente" value="${utente.id}">
-                        <input type="hidden" name="azione" value="cancella utente">
-                        <input type="submit" value="Cancella">
-                    </form>
+                    <form:form action="cancella_utente_${utente.id}" method="post">
+                        <button type="submit">Cancella</button>
+                    </form:form>
                 </td>
             </tr>
 

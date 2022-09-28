@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <table border="3" style="text-align: center">
 
@@ -10,7 +11,7 @@
         <th>Azioni</th>
     </tr>
 
-    <c:forEach var="prenotazione" items="${listaPrenotazioni}">
+    <c:forEach var="prenotazione" items="${listaPrenotazioniDaApprovare}">
 
         <tr>
             <td>${prenotazione.auto.targa}</td>
@@ -22,10 +23,9 @@
                 <fmt:formatDate pattern="dd/MM/yyyy" value="${dataFineform}"/>
             </td>
             <td>
-                <form action="PrenotazioneServlet" method="post">
-                    <input type="hidden" name="idPrenotazione" value=${prenotazione.id}>
-                    <input type="submit" value="Approva">
-                </form>
+                <form:form action="approva_prenotazione/${prenotazione.id}" method="post">
+                    <button type="submit">Approva</button>
+                </form:form>
             </td>
         </tr>
 

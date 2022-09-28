@@ -8,7 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-@Service("clientiService")
+@Service("utenteService")
 @Transactional
 public class UtenteServiceImpl implements UtenteService
 {

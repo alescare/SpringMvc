@@ -7,7 +7,7 @@
 
     <main class="form-signin w-25 m-auto">
 
-        <form:form action="utente/home" method="POST" modelAttribute="utenteLogin" enctype="multipart/form-data">
+        <form:form action="utente/home" method="post" modelAttribute="utenteLogin" enctype="multipart/form-data">
 
             <div class="form-floating">
                 <form:input id="email" path="email" type="email" class="form-control" placeholder="name@example.com"/>

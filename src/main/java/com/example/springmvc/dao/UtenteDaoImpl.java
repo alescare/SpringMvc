@@ -3,11 +3,13 @@ package com.example.springmvc.dao;
 import com.example.springmvc.entities.Auto;
 import com.example.springmvc.entities.Utente;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.*;
 import java.util.List;
 
 @Repository
+@Transactional
 public class UtenteDaoImpl extends AbstractDao<Utente, Long> implements UtenteDao {
 
 

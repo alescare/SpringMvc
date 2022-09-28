@@ -8,7 +8,7 @@ public interface UtenteService
 {
     public void salvaOAggiornaUtente(Utente utente);
 
-    public Utente cercaUtentePerCredenziali(String username, String password);
+    public Utente cercaUtentePerCredenziali(String email, String password);
 
 
     public List<Utente> listaUtenti();

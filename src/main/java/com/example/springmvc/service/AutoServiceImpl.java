@@ -4,11 +4,13 @@ import com.example.springmvc.dao.AutoDao;
 import com.example.springmvc.entities.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Service
+@Service("autoService")
+@Transactional
 public class AutoServiceImpl implements AutoService {
 
     @Autowired

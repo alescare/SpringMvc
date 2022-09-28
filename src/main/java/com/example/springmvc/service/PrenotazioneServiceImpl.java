@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.util.List;
 
-@Service("couponsService")
+@Service("prenotazioneService")
 @Transactional
 public class PrenotazioneServiceImpl implements PrenotazioneService
 {

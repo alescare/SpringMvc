@@ -4,7 +4,7 @@
 
 
 <form:form action="auto_disponibili" method="get">
-    Data inizio: <input  type="date" name="dataInizioPeriodo" value="${dataInizioPeriodo}" ><br/>
+    Data inizio: <input  type="date" name="dataInizioPeriodo" value="${dataInizioPeriodo}"><br/>
     Data fine: <input  type="date" name="dataFinePeriodo" value="${dataFinePeriodo}"><br/>
     <button type="submit">Cerca</button>
 </form:form>
@@ -30,8 +30,9 @@
             <td>${auto.tipologia}</td>
             <td>${auto.annoImmatricolazione}</td>
             <td>
-                <form:form action="utente/home" method="post">
-                    <input type="hidden" name="idAuto" value="${auto.id}">
+                <form:form action="prenota_auto/${auto.id}" method="post">
+                    <input type="hidden" name="dataFinePeriodo" value="${dataFinePeriodo}">
+                    <input type="hidden" name="dataInizioPeriodo" value="${dataInizioPeriodo}">
                     <button type="submit">Prenota</button>
                 </form:form>
             </td>

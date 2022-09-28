@@ -4,7 +4,7 @@
 
 
 
-<form:form action="gestione_auto" method="post" modelAttribute="autoDaModificare">
+<form:form action="gestione_modifiche_auto" method="post" modelAttribute="autoDaModificare">
 
     <form:input type="hidden" name="idAutoDaModificare" path="id"></form:input>
     Costruttore:<br/>
@@ -47,13 +47,12 @@
         <td>${auto.targa}</td>
         <td>${auto.annoImmatricolazione}</td>
         <td>
-            <form:form action="modifica_auto/${auto.id}" method="get">
+            <form:form action="modifica_auto_${auto.id}" method="get">
                 <input type="submit" value="Modifica">
             </form:form>
         </td>
         <td>
-            <form:form action="gestione_auto" method="post">
-                <input type="hidden" name="idAuto" value="${auto.id}">
+            <form:form action="elimina_auto_${auto.id}" method="post">
                 <input type="hidden" name="azione" value="elimina auto">
                 <input type="submit" value="Elimina">
             </form:form>

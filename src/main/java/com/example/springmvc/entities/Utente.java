@@ -28,7 +28,7 @@ public class Utente implements Serializable {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(mappedBy = "utente", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "utente", fetch = FetchType.LAZY)
     private Set<Prenotazione> prenotazioni;
 
     public Utente() {

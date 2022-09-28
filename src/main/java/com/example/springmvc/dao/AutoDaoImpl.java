@@ -4,11 +4,13 @@ import com.example.springmvc.entities.Auto;
 import com.example.springmvc.entities.Prenotazione;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
 
 @Repository
+@Transactional
 public class AutoDaoImpl extends AbstractDao<Auto, Long> implements AutoDao{
 
     @Autowired

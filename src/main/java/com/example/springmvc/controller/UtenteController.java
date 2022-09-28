@@ -18,13 +18,35 @@ public class UtenteController {
     @Autowired
     private AutoService autoService;
 
+    @PutMapping(value = "/modifica_credenziali")
+    public String modificaCredenziali(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, Model model) {
+        //utente.setPassword(password)
+        //utente.setUsername(username)
+        //utente.setEmail(email)
+        return "redirect:/utente/profilo";
+    }
+
+    @PostMapping(value = "/aggiungi_utente")
+    public String aggiungiUtente(@ModelAttribute("nuovoUtente") Utente utente, Model model) {
+        utenteService.salvaOAggiornaUtente(utente);
+        model.addAttribute("nuovoUtente", new Utente());
+        return "gestioneUtenti";
+    }
+
+    @PostMapping(value = "/cancella_utente_{utenteId}")
+    public String cancellaUtente(@PathVariable("utenteId") String id, Model model) {
+        utenteService.cancellaUtentePerId(Long.parseLong(id));
+        return "redirect:/utente/gestione_utenti";
+    }
+
     @PostMapping(value = "/home")
     public String login(@ModelAttribute("utenteLogin") Utente utente, Model model) {
 
-        utente = utenteService.cercaUtentePerCredenziali(utente.getEmail(), utente.getPassword());
-        if (utente.getId() != null) {
-            model.addAttribute("utenteLogin", utente);
-            if (utente.isAdmin()) {
+        Utente utente2 = utenteService.cercaUtentePerCredenziali("admin@mail.com", "admin");
+        System.out.println(utente2.getEmail() + utente2.getPassword());
+        if (utente2.getId() != null) {
+            //model.addAttribute("utenteLogin", utente);
+            if (utente2.isAdmin()) {
                 return "superUserHome";
             }
             return "customerHome";
@@ -42,8 +64,8 @@ public class UtenteController {
     }
 
     @GetMapping(value = "/gestione_utenti")
-    public String gestisciUtenti(Model model) {
-
+    public String gestioneUtenti(Model model) {
+        model.addAttribute("nuovoUtente", new Utente());
         model.addAttribute("listaUtenti", utenteService.listaUtenti());
         return "gestioneUtenti";
     }
@@ -54,41 +76,27 @@ public class UtenteController {
         return "redirect:/auto/gestione_auto";
     }
 
+
     @GetMapping(value = "/profilo")
-    public String visualizzaProfiloGet(Model model) {
+    public String visualizzaProfilo(Model model) {
+        //set utente e lista prenotazioni
         return "profilo";
     }
 
-    @PostMapping(value = "/profilo")
-    public String modificaCredenziali(@ModelAttribute("utenteLogin") Utente utente, Model model) {
-        utenteService.salvaOAggiornaUtente(utente);
-        return "profilo";
+    @GetMapping(value = "/prenota_auto")
+    public String vaiAPrenotaAuto(Model model){
+
+        return "redirect:/prenotazione/prenota_auto";
     }
 
-
-    @GetMapping(value = "/")
-    public String esci(Model model) {
-        return "redirect:/";
+    @GetMapping(value = "/prenotazioni_da_approvare")
+    public String vaiAPrenotazioniDaApprovare(Model model){
+        return "redirect:/prenotazione/prenotazioni_da_approvare";
     }
 
-
-
-    @PostMapping(value = "/gestione_utenti")
-    public String aggiungi(Model model) {
-
-        return "gestioneUtenti";
-    }
-
-    @PostMapping(value = "/homel")
-    public String entra(Model model) {
-
-        return "customerHome";
-    }
-
-    @PostMapping(value = "/gestione_utenti2")
-    public String cancella(Model model) {
-
-        return "gestioneUtenti";
+    @GetMapping(value = "/prenotazioni_da_cancellare")
+    public String vaiAPrenotazioniDaCancellare(Model model){
+        return "redirect:/prenotazione/prenotazioni_da_cancellare";
     }
 
 }

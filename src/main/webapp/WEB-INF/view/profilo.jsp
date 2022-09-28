@@ -1,12 +1,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 
 <h4>Dati anagrafici utente:</h4>
-<h5>Nome: ${sessionScope.utenteLoggato.nome}</h5>
-<h5>Cognome: ${sessionScope.utenteLoggato.cognome}</h5>
+<h5>Nome: ${utenteLogin.nome}</h5>
+<h5>Cognome: ${utenteLogin.cognome}</h5>
 <h5>Data di nascita:
-    <fmt:parseDate pattern="yyyy-MM-dd" value="${sessionScope.utenteLoggato.dataNascita}" var="dataNascitaform"/>
+    <fmt:parseDate pattern="yyyy-MM-dd" value="${utenteLogin.dataNascita}" var="dataNascitaform"/>
     <fmt:formatDate pattern="dd/MM/yyyy" value="${dataNascitaform}"/>
 </h5>
 
@@ -14,14 +15,14 @@
 
 <h4>Credenziali utente:</h4>
 
-<form action="UtenteServlet" method="post">
+<form:form action="modifica_credenziali" method="post">
 
-    <h5>Username: <input type="text" value="${sessionScope.utenteLoggato.username}" name="username"></h5>
-    <h5>Password: <input type="text" value="${sessionScope.utenteLoggato.password}" name="password"></h5>
-    <input type="hidden" name="azione" value="modifica credenziali">
-    <input type="submit" value="Applica modifiche">
+    <h5>Username: <input type="text" value="${utenteLogin.username}" name="username"></h5>
+    <h5>Password: <input type="text" value="${utenteLogin.password}" name="password"></h5>
+    <h5>Email: <input type="email" value="${utenteLogin.email}" name="email"></h5>
+    <button type="submit">Applica modifiche</button>
 
-</form>
+</form:form>
 
 
 <hr>
