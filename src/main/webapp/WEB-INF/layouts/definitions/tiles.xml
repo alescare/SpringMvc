@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 3.0//EN"
+        "http://tiles.apache.org/dtds/tiles-config_3_0.dtd">
+<tiles-definitions>
+
+    <definition name="baseLayout" template="/WEB-INF/layouts/template/base.jsp">
+        <put-attribute name="titolo" value="" />
+        <put-attribute name="content" value="" />
+        <put-attribute name="footer" value="/WEB-INF/layouts/template/footer.jsp" />
+    </definition>
+
+    <definition name="index" extends="baseLayout">
+        <put-attribute name="titolo"  value="Benvenuti in Noleggio Auto" />
+        <put-attribute name="content" value="/WEB-INF/view/index.jsp" />
+    </definition>
+
+    <definition name="approvaPrenotazioni" extends="baseLayout">
+        <put-attribute name="titolo"  value="Approva prenotazioni" />
+        <put-attribute name="content" value="/WEB-INF/view/approvaPrenotazioni.jsp" />
+    </definition>
+
+    <definition name="cancellaPrenotazioni" extends="baseLayout">
+        <put-attribute name="titolo"  value="Cancella prenotazioni" />
+        <put-attribute name="content" value="/WEB-INF/view/cancellaPrenotazioni.jsp" />
+    </definition>
+
+    <definition name="customerHome" extends="baseLayout">
+        <put-attribute name="titolo"  value="Home" />
+        <put-attribute name="content" value="/WEB-INF/view/customerHome.jsp" />
+    </definition>
+
+    <definition name="gestioneAuto" extends="baseLayout">
+        <put-attribute name="titolo"  value="Gestione auto" />
+        <put-attribute name="content" value="/WEB-INF/view/gestioneAuto.jsp" />
+    </definition>
+
+    <definition name="gestioneUtenti" extends="baseLayout">
+        <put-attribute name="titolo"  value="Gestione utenti" />
+        <put-attribute name="content" value="/WEB-INF/view/gestioneUtenti.jsp" />
+    </definition>
+
+    <definition name="prenotaAuto" extends="baseLayout">
+        <put-attribute name="titolo"  value="Prenotazione auto" />
+        <put-attribute name="content" value="/WEB-INF/view/prenotaAuto.jsp" />
+    </definition>
+
+    <definition name="profilo" extends="baseLayout">
+        <put-attribute name="titolo"  value="Il tuo profilo" />
+        <put-attribute name="content" value="/WEB-INF/view/profilo.jsp" />
+    </definition>
+
+    <definition name="superUserHome" extends="baseLayout">
+        <put-attribute name="titolo"  value="Home" />
+        <put-attribute name="content" value="/WEB-INF/view/superUserHome.jsp" />
+    </definition>
+
+
+</tiles-definitions>
