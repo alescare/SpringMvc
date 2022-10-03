@@ -1,7 +1,14 @@
 package com.example.springmvc.entities;
 
+import com.example.springmvc.validator.AnnoImmatricolazione;
+import org.hibernate.validator.constraints.Range;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
+import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 import java.util.Objects;
 import java.util.Set;
 
@@ -13,14 +20,22 @@ public class Auto implements Serializable {
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @NotNull(message = "{NotNull.Auto.targa.validation}")
     @Column(name = "targa", unique = true)
     private String targa;
+    @NotNull(message = "{NotNull.Auto.costruttore.validation}")
     @Column(name = "costruttore")
     private String costruttore;
+    @NotNull(message = "{NotNull.Auto.modello.validation}")
     @Column(name = "modello")
     private String modello;
+
+    @Min(value = 1886, message = "{Min.Auto.annoImmatricolazione.validation}")//ufficialmente l'anno della prima auto
+    @AnnoImmatricolazione//controlla che non si inserisca un anno successivo a quello attuale
     @Column(name = "anno_immatricolazione")
     private int annoImmatricolazione;
+    @NotNull(message = "{NotNull.Auto.tipologia.validation}")
     @Column(name = "tipologia")
     private String tipologia;
 

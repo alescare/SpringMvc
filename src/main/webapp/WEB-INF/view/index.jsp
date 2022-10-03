@@ -10,11 +10,11 @@
         <form:form action="utente/home" method="post" modelAttribute="utenteLogin" enctype="multipart/form-data">
 
             <div class="form-floating">
-                <form:input id="email" path="email" type="email" class="form-control" placeholder="name@example.com"/>
-                <label for="email">Indirizzo email</label>
+                <form:input name="username" path="username" type="text" class="form-control" placeholder="Username"/>
+                <label for="username">Username</label>
             </div>
             <div class="form-floating">
-                <form:input path="password" type="password" class="form-control" id="password" placeholder="Password"/>
+                <form:input path="password" type="password" class="form-control" name="password" placeholder="Password"/>
                 <label for="password">Password</label>
             </div>
             <div class="pt-3">

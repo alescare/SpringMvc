@@ -27,6 +27,11 @@ public class UtenteServiceImpl implements UtenteService
     }
 
     @Override
+    public Utente cercaUtentePerUsername(String username) {
+        return utenteDao.cercaUtentePerUsername(username);
+    }
+
+    @Override
     public List<Utente> listaUtenti() {
         return utenteDao.listaUtenti();
     }

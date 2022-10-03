@@ -10,6 +10,8 @@ public interface UtenteService
 
     public Utente cercaUtentePerCredenziali(String email, String password);
 
+    public Utente cercaUtentePerUsername(String username);
+
 
     public List<Utente> listaUtenti();
 

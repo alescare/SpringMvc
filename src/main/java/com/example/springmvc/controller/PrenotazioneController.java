@@ -62,7 +62,7 @@ public class PrenotazioneController {
 
 
     @GetMapping(value = "/prenotazioni_da_approvare")
-    public String prenotazioniDaCancellare(Model model) {
+    public String prenotazioniDaApprovare(Model model) {
 
         model.addAttribute("listaPrenotazioniDaApprovare", prenotazioneService.getPrenotazioniDaApprovare());
         return "cancellaPrenotazioni";
@@ -81,6 +81,12 @@ public class PrenotazioneController {
     public String cancellaPrenotazione(@PathVariable("prenotazioneId") String prenotazioneId, Model model) {
         Prenotazione prenotazione = prenotazioneService.getPrenotazione(Long.parseLong(prenotazioneId));
         prenotazioneService.cancellaPrenotazione(prenotazione);
+        return "redirect:prenotazione/cancellaPrenotazioni";
+    }
+
+    @GetMapping(value = "/prenotazioni_da_cancellare")
+    public String prenotazioniDaCancellare(Model model) {
+        model.addAttribute("listaPrenotazioni", prenotazioneService.getPrenotazioni());
         return "cancellaPrenotazioni";
     }
 

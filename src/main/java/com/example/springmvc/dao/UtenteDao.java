@@ -21,4 +21,5 @@ public interface UtenteDao {
 
     public void cancellaUtentePerId(Long id);
 
+    Utente cercaUtentePerUsername(String username);
 }

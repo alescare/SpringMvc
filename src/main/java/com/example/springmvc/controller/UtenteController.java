@@ -4,6 +4,7 @@ import com.example.springmvc.entities.Utente;
 import com.example.springmvc.service.AutoService;
 import com.example.springmvc.service.UtenteService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,9 +19,13 @@ public class UtenteController {
     @Autowired
     private AutoService autoService;
 
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+
     @PutMapping(value = "/modifica_credenziali")
     public String modificaCredenziali(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, Model model) {
-        //utente.setPassword(password)
+        //utente.setPassword(passwordEncoder.encode(password))
         //utente.setUsername(username)
         //utente.setEmail(email)
         return "redirect:/utente/profilo";
@@ -33,7 +38,7 @@ public class UtenteController {
         return "gestioneUtenti";
     }
 
-    @PostMapping(value = "/cancella_utente_{utenteId}")
+    @PostMapping(value = "/cancella_utente/{utenteId}")
     public String cancellaUtente(@PathVariable("utenteId") String id, Model model) {
         utenteService.cancellaUtentePerId(Long.parseLong(id));
         return "redirect:/utente/gestione_utenti";
@@ -41,11 +46,10 @@ public class UtenteController {
 
     @PostMapping(value = "/home")
     public String login(@ModelAttribute("utenteLogin") Utente utente, Model model) {
-
-        Utente utente2 = utenteService.cercaUtentePerCredenziali("admin@mail.com", "admin");
-        System.out.println(utente2.getEmail() + utente2.getPassword());
+        System.out.println(utente.getUsername() + "--" + utente.getPassword());
+        Utente utente2 = utenteService.cercaUtentePerCredenziali(utente.getUsername(), passwordEncoder.encode(utente.getPassword()));
         if (utente2.getId() != null) {
-            //model.addAttribute("utenteLogin", utente);
+            model.addAttribute("utenteLogin", utente);
             if (utente2.isAdmin()) {
                 return "superUserHome";
             }

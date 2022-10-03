@@ -1,6 +1,7 @@
 package com.example.springmvc.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.Past;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -14,8 +15,10 @@ public class Prenotazione implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Column(name = "data_inizio")
+    @Past(message = "{Past.Prenotazione.dataInizio.validation}")
     private LocalDate dataInizio;
     @Column(name = "data_fine")
+    @Past(message = "{Past.Prenotazione.dataFine.validation}")
     private LocalDate dataFine;
 
     @ManyToOne(fetch = FetchType.EAGER)

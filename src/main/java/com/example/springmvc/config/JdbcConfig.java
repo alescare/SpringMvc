@@ -49,14 +49,14 @@ public class JdbcConfig
 	}
 	
 
-	@Bean
+	/*@Bean
 	public DataSourceTransactionManager transactionManager()
 	{
 		DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
 		transactionManager.setDataSource(dataSource());
 		
 		return transactionManager;
-	}
+	}*/
 
 	
 }

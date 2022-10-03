@@ -1,13 +1,20 @@
 package com.example.springmvc.config;
 
+import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.validation.Validator;
+import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 import org.springframework.web.servlet.view.JstlView;
 import org.springframework.web.servlet.view.tiles3.TilesViewResolver;
 import org.springframework.web.util.UrlPathHelper;
+
+import java.time.LocalDate;
+import java.time.temporal.ChronoField;
 
 @Configuration
 @EnableWebMvc
@@ -46,4 +53,28 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
         configurer.setUrlPathHelper(urlPathHelper);
     }
 
+
+
+    @Bean(name = "validator")
+    public LocalValidatorFactoryBean validator()
+    {
+        LocalValidatorFactoryBean bean = new LocalValidatorFactoryBean();
+        bean.setValidationMessageSource(messageSource());
+
+        return bean;
+    }
+    int date = LocalDate.now().get(ChronoField.YEAR);
+    @Bean
+    public MessageSource messageSource()
+    {
+        ResourceBundleMessageSource resource = new ResourceBundleMessageSource();
+        resource.setBasename("messages");
+
+        return resource;
+    }
+
+    @Override
+    public Validator getValidator() {
+        return validator();
+    }
 }

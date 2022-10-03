@@ -9,7 +9,6 @@ import javax.persistence.criteria.*;
 import java.util.List;
 
 @Repository
-@Transactional
 public class UtenteDaoImpl extends AbstractDao<Utente, Long> implements UtenteDao {
 
 
@@ -63,5 +62,32 @@ public class UtenteDaoImpl extends AbstractDao<Utente, Long> implements UtenteDa
     @Override
     public void cancellaUtentePerId(Long id) {
         super.EliminaById(id);
+    }
+
+    @Override
+    public Utente cercaUtentePerUsername(String username) {
+
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Utente> queryDefinition = cb.createQuery(Utente.class);
+
+        Root<Utente> recordset = queryDefinition.from(Utente.class);
+
+        Predicate whereClause = cb.equal(recordset.<String>get("username"), username);
+
+        queryDefinition.select(recordset).
+                where(whereClause);
+
+        Utente utente = new Utente();
+        try {
+             utente = entityManager.createQuery(queryDefinition).getSingleResult();
+        } catch (Exception e){
+            return null;
+        }
+
+
+        entityManager.clear();
+
+        return utente;
+
     }
 }

@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.util.List;
 
 @Repository
-@Transactional
 public class PrenotazioneDaoImpl extends AbstractDao<Prenotazione, Long> implements PrenotazioneDao {
 
     public void salvaOAggiornaPrenotazione(Prenotazione prenotazione) {
