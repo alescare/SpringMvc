@@ -1,11 +1,14 @@
-package com.example.springmvc.dao;
+package com.example.springmvc.dao.impl;
 
-import com.example.springmvc.entities.Auto;
+import com.example.springmvc.dao.AbstractDao;
+import com.example.springmvc.dao.UtenteDao;
 import com.example.springmvc.entities.Utente;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.criteria.*;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Predicate;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository

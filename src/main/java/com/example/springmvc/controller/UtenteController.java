@@ -2,69 +2,70 @@ package com.example.springmvc.controller;
 
 import com.example.springmvc.entities.Utente;
 import com.example.springmvc.service.AutoService;
+import com.example.springmvc.service.PrenotazioneService;
 import com.example.springmvc.service.UtenteService;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
+
 @Controller
 @RequestMapping("/utente")
 public class UtenteController {
 
-    @Autowired
-    private UtenteService utenteService;
+    private final UtenteService utenteService;
 
-    @Autowired
-    private AutoService autoService;
+    private final AutoService autoService;
 
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
+    private final BCryptPasswordEncoder passwordEncoder;
 
+    private final PrenotazioneService prenotazioneService;
 
-    @PutMapping(value = "/modifica_credenziali")
-    public String modificaCredenziali(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, Model model) {
-        //utente.setPassword(passwordEncoder.encode(password))
-        //utente.setUsername(username)
-        //utente.setEmail(email)
-        return "redirect:/utente/profilo";
+    public UtenteController(UtenteService utenteService, AutoService autoService, BCryptPasswordEncoder passwordEncoder, PrenotazioneService prenotazioneService) {
+        this.utenteService = utenteService;
+        this.autoService = autoService;
+        this.passwordEncoder = passwordEncoder;
+        this.prenotazioneService = prenotazioneService;
+    }
+
+    @PostMapping(value = "/modifica_credenziali")
+    public String modificaCredenziali(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, Authentication authentication) {
+        Utente utente = utenteService.cercaUtentePerUsername(authentication.getName());
+        if (!("".equals(password) || password == null)) utente.setPassword(passwordEncoder.encode(password));
+        if (!("".equals(username))) utente.setUsername(username);
+        if (!("".equals(email))) utente.setEmail(email);
+        utenteService.salvaOAggiornaUtente(utente);
+        return "redirect:/login/form_logout";
     }
 
     @PostMapping(value = "/aggiungi_utente")
-    public String aggiungiUtente(@ModelAttribute("nuovoUtente") Utente utente, Model model) {
-        utenteService.salvaOAggiornaUtente(utente);
-        model.addAttribute("nuovoUtente", new Utente());
-        return "gestioneUtenti";
-    }
+    public String aggiungiUtente(@RequestParam("dataNascita") String dataNascita,
+                                 @RequestParam("username") String username,
+                                 @RequestParam("password") String password,
+                                 @RequestParam("nome") String nome,
+                                 @RequestParam("cognome") String cognome,
+                                 @RequestParam("email") String email) {
 
-    @PostMapping(value = "/cancella_utente/{utenteId}")
-    public String cancellaUtente(@PathVariable("utenteId") String id, Model model) {
-        utenteService.cancellaUtentePerId(Long.parseLong(id));
+        Utente nuovoUtente = new Utente(nome, cognome, LocalDate.parse(dataNascita),
+                username, passwordEncoder.encode(password), email);
+        utenteService.salvaOAggiornaUtente(nuovoUtente);
         return "redirect:/utente/gestione_utenti";
     }
 
-    @PostMapping(value = "/home")
-    public String login(@ModelAttribute("utenteLogin") Utente utente, Model model) {
-        System.out.println(utente.getUsername() + "--" + utente.getPassword());
-        Utente utente2 = utenteService.cercaUtentePerCredenziali(utente.getUsername(), passwordEncoder.encode(utente.getPassword()));
-        if (utente2.getId() != null) {
-            model.addAttribute("utenteLogin", utente);
-            if (utente2.isAdmin()) {
-                return "superUserHome";
-            }
-            return "customerHome";
-        }
-        return "index";
 
+    @RequestMapping(value = "/home")
+    public String home(Authentication authentication, Model model) {
+        model.addAttribute("utenteLogin", utenteService.cercaUtentePerUsername(authentication.getName()));
+        return "home";
     }
 
-    @GetMapping(value = "/home")
-    public String home(@ModelAttribute("utenteLogin") Utente utente, Model model) {
-        if (utente.isAdmin()) {
-            return "redirect:/utente/superUserHome";
-        }
-        return "redirect:/utente/customerHome";
+    @PostMapping(value = "/cancella_utente/{utenteId}")
+    public String cancellaUtente(@PathVariable("utenteId") String id) {
+        utenteService.cancellaUtentePerId(Long.parseLong(id));
+        return "redirect:/utente/gestione_utenti";
     }
 
     @GetMapping(value = "/gestione_utenti")
@@ -82,24 +83,29 @@ public class UtenteController {
 
 
     @GetMapping(value = "/profilo")
-    public String visualizzaProfilo(Model model) {
-        //set utente e lista prenotazioni
+    public String visualizzaProfilo(Authentication authentication, Model model) {
+
+        Utente utenteLogin = utenteService.cercaUtentePerUsername(authentication.getName());
+        model.addAttribute("utenteLogin", utenteLogin);
+        model.addAttribute("listaPrenotazioni", utenteLogin.getPrenotazioni());
+
         return "profilo";
     }
 
     @GetMapping(value = "/prenota_auto")
-    public String vaiAPrenotaAuto(Model model){
-
+    public String vaiAPrenotaAuto(Authentication authentication) {
+        Utente utente = utenteService.cercaUtentePerUsername(authentication.getName());
+        if (prenotazioneService.prenotazioneInCorsoUtente(utente)) return "redirect:/utente/home";
         return "redirect:/prenotazione/prenota_auto";
     }
 
     @GetMapping(value = "/prenotazioni_da_approvare")
-    public String vaiAPrenotazioniDaApprovare(Model model){
+    public String vaiAPrenotazioniDaApprovare() {
         return "redirect:/prenotazione/prenotazioni_da_approvare";
     }
 
     @GetMapping(value = "/prenotazioni_da_cancellare")
-    public String vaiAPrenotazioniDaCancellare(Model model){
+    public String vaiAPrenotazioniDaCancellare() {
         return "redirect:/prenotazione/prenotazioni_da_cancellare";
     }
 

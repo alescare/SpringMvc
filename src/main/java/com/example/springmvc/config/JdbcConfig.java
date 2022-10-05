@@ -1,6 +1,5 @@
 package com.example.springmvc.config;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +7,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
-import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
@@ -20,9 +18,13 @@ import javax.sql.DataSource;
 @PropertySource(value = { "classpath:application.properties" })
 public class JdbcConfig 
 {
-	@Autowired
-	private Environment environment;
-	
+
+	private final Environment environment;
+
+	public JdbcConfig(Environment environment) {
+		this.environment = environment;
+	}
+
 	@Bean
 	public JdbcTemplate jdbcTemplate(DataSource dataSource)
 	{
@@ -47,16 +49,5 @@ public class JdbcConfig
 		
 		return dataSource;
 	}
-	
 
-	/*@Bean
-	public DataSourceTransactionManager transactionManager()
-	{
-		DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
-		transactionManager.setDataSource(dataSource());
-		
-		return transactionManager;
-	}*/
-
-	
 }

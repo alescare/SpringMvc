@@ -10,9 +10,9 @@
         <put-attribute name="footer" value="/WEB-INF/layouts/template/footer.jsp" />
     </definition>
 
-    <definition name="index" extends="baseLayout">
+    <definition name="login" extends="baseLayout">
         <put-attribute name="titolo"  value="Benvenuti in Noleggio Auto" />
-        <put-attribute name="content" value="/WEB-INF/view/index.jsp" />
+        <put-attribute name="content" value="/WEB-INF/view/login.jsp" />
     </definition>
 
     <definition name="approvaPrenotazioni" extends="baseLayout">
@@ -25,9 +25,9 @@
         <put-attribute name="content" value="/WEB-INF/view/cancellaPrenotazioni.jsp" />
     </definition>
 
-    <definition name="customerHome" extends="baseLayout">
+    <definition name="home" extends="baseLayout">
         <put-attribute name="titolo"  value="Home" />
-        <put-attribute name="content" value="/WEB-INF/view/customerHome.jsp" />
+        <put-attribute name="content" value="/WEB-INF/view/home.jsp" />
     </definition>
 
     <definition name="gestioneAuto" extends="baseLayout">

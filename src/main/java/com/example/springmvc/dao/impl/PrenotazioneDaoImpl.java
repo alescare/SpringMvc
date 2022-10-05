@@ -1,9 +1,10 @@
-package com.example.springmvc.dao;
+package com.example.springmvc.dao.impl;
 
+import com.example.springmvc.dao.AbstractDao;
+import com.example.springmvc.dao.PrenotazioneDao;
 import com.example.springmvc.entities.Prenotazione;
 import com.example.springmvc.entities.Utente;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -84,10 +85,7 @@ public class PrenotazioneDaoImpl extends AbstractDao<Prenotazione, Long> impleme
 
         entityManager.clear();
 
-        if(prenotazioni.isEmpty()) {
-            return true;
-        }
-        return false;
+        return !(prenotazioni.isEmpty());
     }
 
     public void cancellaPrenotazione(Prenotazione prenotazione) {

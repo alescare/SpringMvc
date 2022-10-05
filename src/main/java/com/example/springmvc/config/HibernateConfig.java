@@ -24,11 +24,16 @@ import static org.hibernate.cfg.Environment.*;
 @ComponentScan({"com.example.springmvc.config"})
 @PropertySource("classpath:application.properties")
 public class HibernateConfig {
-    @Autowired
-    private Environment env;
 
-    @Autowired
-    private DataSource dataSource;
+    private final Environment env;
+
+
+    private final DataSource dataSource;
+
+    public HibernateConfig(Environment env, DataSource dataSource) {
+        this.env = env;
+        this.dataSource = dataSource;
+    }
 
     @Bean
     LocalContainerEntityManagerFactoryBean entityManagerFactory() {

@@ -7,20 +7,20 @@
 
     <main class="form-signin w-25 m-auto">
 
-        <form:form action="utente/home" method="post" modelAttribute="utenteLogin" enctype="multipart/form-data">
+        <form action="performLogin" method="post" >
 
             <div class="form-floating">
-                <form:input name="username" path="username" type="text" class="form-control" placeholder="Username"/>
+                <input name="username" type="text" class="form-control" placeholder="Username" id="username"/>
                 <label for="username">Username</label>
             </div>
             <div class="form-floating">
-                <form:input path="password" type="password" class="form-control" name="password" placeholder="Password"/>
+                <input  type="password" class="form-control" name="password" placeholder="Password" id="password"/>
                 <label for="password">Password</label>
             </div>
             <div class="pt-3">
                 <input type="submit" id="accedi" class="btn btn-primary form-buttons" value = "Accedi"/>
             </div>
-        </form:form>
+        </form>
     </main>
 </div>
 

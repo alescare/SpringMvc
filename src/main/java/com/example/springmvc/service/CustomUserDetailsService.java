@@ -1,19 +1,22 @@
 package com.example.springmvc.service;
 
 import com.example.springmvc.entities.Utente;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.security.core.userdetails.User;
 
 @Service("customUserDetailsService")
 public class CustomUserDetailsService implements UserDetailsService {
-    @Autowired
-    private UtenteService utenteService;
+
+    private final UtenteService utenteService;
+
+    public CustomUserDetailsService(UtenteService utenteService) {
+        this.utenteService = utenteService;
+    }
 
     @Override
     @Transactional
@@ -30,7 +33,7 @@ public class CustomUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("Utente non Trovato!!");
         }
 
-        UserBuilder builder = null;
+        UserBuilder builder;
 
         builder = User.withUsername(utente.getUsername());
         builder.password(utente.getPassword());

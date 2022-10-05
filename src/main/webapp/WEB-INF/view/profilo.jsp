@@ -15,14 +15,14 @@
 
 <h4>Credenziali utente:</h4>
 
-<form:form action="modifica_credenziali" method="post">
+<form action="modifica_credenziali" method="post">
 
     <h5>Username: <input type="text" value="${utenteLogin.username}" name="username"></h5>
-    <h5>Password: <input type="text" value="${utenteLogin.password}" name="password"></h5>
+    <h5>Password: <input type="text" name="password"></h5>
     <h5>Email: <input type="email" value="${utenteLogin.email}" name="email"></h5>
     <button type="submit">Applica modifiche</button>
 
-</form:form>
+</form>
 
 
 <hr>

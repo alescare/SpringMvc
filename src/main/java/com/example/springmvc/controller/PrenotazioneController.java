@@ -4,7 +4,8 @@ import com.example.springmvc.entities.Auto;
 import com.example.springmvc.entities.Prenotazione;
 import com.example.springmvc.service.AutoService;
 import com.example.springmvc.service.PrenotazioneService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.springmvc.service.UtenteService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -16,17 +17,17 @@ import java.util.List;
 @RequestMapping("/prenotazione")
 public class PrenotazioneController {
 
-    @Autowired
-    PrenotazioneService prenotazioneService;
 
-    @Autowired
-    AutoService autoService;
+    private final PrenotazioneService prenotazioneService;
 
-    @GetMapping(value = "/approva")
-    public String ApprovaPrenotazioni(Model model) {
+    private final AutoService autoService;
 
-        model.addAttribute("prenotazioni", prenotazioneService.getPrenotazioniDaApprovare());
-        return "approvaPrenotazioni";
+    private final UtenteService utenteService;
+
+    public PrenotazioneController(PrenotazioneService prenotazioneService, AutoService autoService, UtenteService utenteService) {
+        this.prenotazioneService = prenotazioneService;
+        this.autoService = autoService;
+        this.utenteService = utenteService;
     }
 
     @GetMapping(value = "/prenota_auto")
@@ -36,7 +37,7 @@ public class PrenotazioneController {
         return "prenotaAuto";
     }
 
-    @GetMapping(value = "/auto_disponibili")
+    @PostMapping(value = "/auto_disponibili")
     public String cercaAutoDisponibili(@RequestParam("dataInizioPeriodo") String dataInizioPeriodoForm, @RequestParam("dataFinePeriodo") String dataFinePeriodoForm, Model model) {
 
         LocalDate dataInizioPeriodo = LocalDate.parse(dataInizioPeriodoForm);
@@ -50,9 +51,9 @@ public class PrenotazioneController {
     }
 
     @PostMapping(value = "/prenota_auto/{autoId}")
-    public String prenotazioneAuto(@PathVariable("autoId") String autoId, @RequestParam("dataInizioPeriodo") String dataInizioPeriodo, @RequestParam("dataFinePeriodo") String dataFinePeriodo, Model model) {
+    public String prenotazioneAuto(@PathVariable("autoId") String autoId, @RequestParam("dataInizioPeriodo") String dataInizioPeriodo, @RequestParam("dataFinePeriodo") String dataFinePeriodo, Authentication authentication) {
         Prenotazione nuovaPrenotazione = new Prenotazione();
-        //nuovaPrenotazione.setUtente()
+        nuovaPrenotazione.setUtente(utenteService.cercaUtentePerUsername(authentication.getName()));
         nuovaPrenotazione.setAuto(autoService.getAutoPerId(Long.parseLong(autoId)));
         nuovaPrenotazione.setDataInizio(LocalDate.parse(dataInizioPeriodo));
         nuovaPrenotazione.setDataFine(LocalDate.parse(dataFinePeriodo));
@@ -65,7 +66,7 @@ public class PrenotazioneController {
     public String prenotazioniDaApprovare(Model model) {
 
         model.addAttribute("listaPrenotazioniDaApprovare", prenotazioneService.getPrenotazioniDaApprovare());
-        return "cancellaPrenotazioni";
+        return "approvaPrenotazioni";
     }
 
 

@@ -1,5 +1,7 @@
 package com.example.springmvc.entities;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
@@ -44,20 +46,21 @@ public class Utente implements Serializable {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(mappedBy = "utente", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "utente", fetch = FetchType.EAGER)
     private Set<Prenotazione> prenotazioni;
 
     public Utente() {
 
     }
 
-    public Utente(String username, String password, boolean admin) {
+    public Utente(String nome, String cognome, LocalDate dataNascita, String username, String password, String email) {
+        this.nome = nome;
+        this.cognome = cognome;
+        this.dataNascita = dataNascita;
         this.username = username;
         this.password = password;
-        this.dataNascita = dataNascita;
-        this.admin = admin;
+        this.email = email;
     }
-
 
     public Long getId() {
         return id;

@@ -1,9 +1,9 @@
-package com.example.springmvc.service;
+package com.example.springmvc.service.impl;
 
 import com.example.springmvc.dao.PrenotazioneDao;
 import com.example.springmvc.entities.Prenotazione;
 import com.example.springmvc.entities.Utente;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.springmvc.service.PrenotazioneService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,8 +15,11 @@ import java.util.List;
 public class PrenotazioneServiceImpl implements PrenotazioneService
 {
 
-    @Autowired
-    PrenotazioneDao prenotazioneDao;
+    private final PrenotazioneDao prenotazioneDao;
+
+    public PrenotazioneServiceImpl(PrenotazioneDao prenotazioneDao) {
+        this.prenotazioneDao = prenotazioneDao;
+    }
 
     @Override
     public void salvaOAggiornaPrenotazione(Prenotazione prenotazione) {

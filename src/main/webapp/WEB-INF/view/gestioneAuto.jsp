@@ -22,7 +22,7 @@
     Anno di immatricolazione:<br/>
     <form:input type="text" name="annoImmatricolazione" path="annoImmatricolazione"></form:input>
     <br/><br/>
-    <button type="submit" name="azione" value="Salva"/>Salva</button>
+    <button type="submit">Salva</button>
 
 </form:form>
 
@@ -48,13 +48,12 @@
         <td>${auto.annoImmatricolazione}</td>
         <td>
             <form:form action="modifica_auto_${auto.id}" method="get">
-                <input type="submit" value="Modifica">
+                <button type="submit">Modifica</button>
             </form:form>
         </td>
         <td>
-            <form:form action="elimina_auto_${auto.id}" method="post">
-                <input type="hidden" name="azione" value="elimina auto">
-                <input type="submit" value="Elimina">
+            <form:form action="elimina_auto/${auto.id}" method="post">
+                <button type="submit">Elimina</button>
             </form:form>
         </td>
     </tr>

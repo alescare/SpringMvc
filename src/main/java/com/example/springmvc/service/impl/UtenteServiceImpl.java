@@ -1,8 +1,8 @@
-package com.example.springmvc.service;
+package com.example.springmvc.service.impl;
 
 import com.example.springmvc.dao.UtenteDao;
 import com.example.springmvc.entities.Utente;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.springmvc.service.UtenteService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,8 +13,12 @@ import java.util.List;
 public class UtenteServiceImpl implements UtenteService
 {
 
-    @Autowired
-    UtenteDao utenteDao;
+
+    private final UtenteDao utenteDao;
+
+    public UtenteServiceImpl(UtenteDao utenteDao) {
+        this.utenteDao = utenteDao;
+    }
 
     @Override
     public void salvaOAggiornaUtente(Utente utente) {

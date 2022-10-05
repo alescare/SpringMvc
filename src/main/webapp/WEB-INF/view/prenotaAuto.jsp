@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 
 
-<form:form action="auto_disponibili" method="get">
+<form:form action="auto_disponibili" method="post">
     Data inizio: <input  type="date" name="dataInizioPeriodo" value="${dataInizioPeriodo}"><br/>
     Data fine: <input  type="date" name="dataFinePeriodo" value="${dataFinePeriodo}"><br/>
     <button type="submit">Cerca</button>

@@ -1,8 +1,8 @@
-package com.example.springmvc.service;
+package com.example.springmvc.service.impl;
 
 import com.example.springmvc.dao.AutoDao;
 import com.example.springmvc.entities.Auto;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.example.springmvc.service.AutoService;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -13,8 +13,11 @@ import java.util.List;
 @Transactional
 public class AutoServiceImpl implements AutoService {
 
-    @Autowired
-    AutoDao autoDao;
+    private final AutoDao autoDao;
+
+    public AutoServiceImpl(AutoDao autoDao) {
+        this.autoDao = autoDao;
+    }
 
     @Override
     public void salvaOAggiornaAuto(Auto auto) {

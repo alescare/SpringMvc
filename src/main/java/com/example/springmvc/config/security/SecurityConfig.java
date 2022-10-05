@@ -1,13 +1,11 @@
 package com.example.springmvc.config.security;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,8 +13,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.firewall.HttpFirewall;
-import org.springframework.security.web.firewall.StrictHttpFirewall;
 
 import javax.sql.DataSource;
 
@@ -24,13 +20,16 @@ import javax.sql.DataSource;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
+
     @Qualifier("customUserDetailsService")
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
 
+    private final DataSource dataSource;
 
-    @Autowired
-    DataSource dataSource;
+    public SecurityConfig(UserDetailsService userDetailsService, DataSource dataSource) {
+        this.userDetailsService = userDetailsService;
+        this.dataSource = dataSource;
+    }
 
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
@@ -39,22 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 
-    /*@Bean
-    public HttpFirewall allowUrlEncodedSlashHttpFirewall() {
-        StrictHttpFirewall firewall = new StrictHttpFirewall();
-        firewall.setAllowUrlEncodedSlash(true);
-        firewall.setAllowSemicolon(true);
 
-        return firewall;
-    }*/
-
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-
-        super.configure(web);
-        //web.httpFirewall(allowUrlEncodedSlashHttpFirewall());
-
-    }
 
     @Override
     public void configure(final AuthenticationManagerBuilder auth) throws Exception {
@@ -96,7 +80,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(final HttpSecurity http) throws Exception {
         http
+                .csrf()
+                .disable()
                 .authorizeRequests()
+                .antMatchers("/**").permitAll()
                 .antMatchers("/resources/**").permitAll()
                 .antMatchers("/index/**").permitAll()
                 .antMatchers("/").hasAnyRole("ANONYMOUS", "USER")
@@ -104,12 +91,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(ADMIN_AUTO_MATCHER).access("hasRole('ADMIN')")
                 .antMatchers(ADMIN_UTENTI_MATCHER).access("hasRole('ADMIN')")
                 .antMatchers(ADMIN_PRENOTAZIONI_MATCHER).access("hasRole('ADMIN')")
-                .antMatchers("/**").permitAll()
                 .and()
                 .addFilterBefore(authenticationFilter(), UsernamePasswordAuthenticationFilter.class)
                 .formLogin()
-                .loginPage("/index")
-                .loginProcessingUrl("/utente/home")
+                .loginPage("/login")
+                .loginProcessingUrl("/performLogin")
+                .successHandler(authenticationSuccessHandler())
                 .failureUrl("/login/form?error")
                 .usernameParameter("username")
                 .passwordParameter("password")
@@ -118,7 +105,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .accessDeniedPage("/login/form?forbidden")
                 .and()
                 .logout()
-                .logoutUrl("/login/form?logout");
+                .logoutUrl("/login/form?logout")
+                .clearAuthentication(true);
     }
 
     public AuthenticationFilter authenticationFilter()
