@@ -1,14 +1,12 @@
 package com.example.springmvc.entities;
 
 import com.example.springmvc.validator.AnnoImmatricolazione;
-import org.hibernate.validator.constraints.Range;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
-import java.time.LocalDate;
-import java.time.temporal.ChronoField;
 import java.util.Objects;
 import java.util.Set;
 
@@ -21,25 +19,25 @@ public class Auto implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull(message = "{NotNull.Auto.targa.validation}")
+    @NotEmpty(message = "{NotEmpty.Auto.targa.validation}")
     @Column(name = "targa", unique = true)
     private String targa;
-    @NotNull(message = "{NotNull.Auto.costruttore.validation}")
+    @NotEmpty(message = "{NotEmpty.Auto.costruttore.validation}")
     @Column(name = "costruttore")
     private String costruttore;
-    @NotNull(message = "{NotNull.Auto.modello.validation}")
+    @NotEmpty(message = "{NotEmpty.Auto.modello.validation}")
     @Column(name = "modello")
     private String modello;
 
-    @Min(value = 1886, message = "{Min.Auto.annoImmatricolazione.validation}")//ufficialmente l'anno della prima auto
+    @Min(value = 1886, message = "{Min.Auto.annoImmatricolazione.validation}") //ufficialmente l'anno della prima auto
     @AnnoImmatricolazione//controlla che non si inserisca un anno successivo a quello attuale
     @Column(name = "anno_immatricolazione")
-    private int annoImmatricolazione;
-    @NotNull(message = "{NotNull.Auto.tipologia.validation}")
+    private Integer annoImmatricolazione;
+    @NotEmpty(message = "{NotEmpty.Auto.tipologia.validation}")
     @Column(name = "tipologia")
     private String tipologia;
 
-    @OneToMany(mappedBy = "auto")
+    @OneToMany(mappedBy = "auto", cascade = CascadeType.ALL)
     private Set<Prenotazione> prenotazioni;
 
     public Auto() {
@@ -69,11 +67,11 @@ public class Auto implements Serializable {
         this.modello = modello;
     }
 
-    public int getAnnoImmatricolazione() {
+    public @Min(value = 1886, message = "{Min.Auto.annoImmatricolazione.validation}") Integer getAnnoImmatricolazione() {
         return annoImmatricolazione;
     }
 
-    public void setAnnoImmatricolazione(int annoImmatricolazione) {
+    public void setAnnoImmatricolazione(@Min(value = 1886, message = "{Min.Auto.annoImmatricolazione.validation}") Integer annoImmatricolazione) {
         this.annoImmatricolazione = annoImmatricolazione;
     }
 
@@ -106,7 +104,7 @@ public class Auto implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Auto auto = (Auto) o;
-        return id == auto.id;
+        return id.equals(auto.id);
     }
 
     @Override

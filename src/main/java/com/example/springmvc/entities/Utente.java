@@ -3,10 +3,7 @@ package com.example.springmvc.entities;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
@@ -19,23 +16,24 @@ public class Utente implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull(message = "{NotNull.Utente.nome.validation}")
+    @NotEmpty(message = "{NotEmpty.Utente.nome.validation}")
     @Column(name = "nome")
     private String nome;
 
-    @NotNull(message = "{NotNull.Utente.cognome.validation}")
+    @NotEmpty(message = "{NotEmpty.Utente.cognome.validation}")
     @Column(name = "cognome")
     private String cognome;
 
-    @NotNull(message = "{NotNull.Utente.dataNascita.validation}")
     @Column(name = "data_nascita")
+    @NotNull(message = "{NotEmpty.Utente.dataNascita.validation}")
+    @DateTimeFormat(pattern="yyyy-MM-dd")
     private LocalDate dataNascita;
 
-    @NotNull(message = "{NotNull.Utente.username.validation}")
+    @NotEmpty(message = "{NotEmpty.Utente.username.validation}")
     @Column(name = "username", unique = true)
     private String username;
 
-    @NotNull(message = "{NotNull.Utente.password.validation}")
+    @NotEmpty(message = "{NotEmpty.Utente.password.validation}")
     @Column(name = "password")
     private String password;
 
@@ -43,10 +41,11 @@ public class Utente implements Serializable {
     private boolean admin;
 
     @Email(message = "{Email.Utente.email.validation}")
+    @NotEmpty(message = "{NotEmpty.Utente.email.validation}")
     @Column(name = "email")
     private String email;
 
-    @OneToMany(mappedBy = "utente", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "utente", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<Prenotazione> prenotazioni;
 
     public Utente() {

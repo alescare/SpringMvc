@@ -8,22 +8,40 @@
 
     <br/>
 
-    <form action="aggiungi_utente" method="post">
-        <input type="hidden" name="idNuovoUtente" path="id"></input>
+    <form:form action="aggiungi_utente" method="post" modelAttribute="nuovoUtente">
         Nome:<br/>
-        <input type="text" name="nome"><br/><br/>
+        <form:input path="nome" type="text" name="nome"></form:input>
+        <br/>
+        <form:errors path="nome" cssClass="text-danger"></form:errors>
+        <br/><br/>
         Cognome:<br/>
-        <input type="text" name="cognome"><br/><br/>
+        <form:input path="cognome" type="text" name="cognome"></form:input>
+        <br/>
+        <form:errors path="cognome" cssClass="text-danger"></form:errors>
+        <br/><br/>
         Email:<br/>
-        <input type="text" name="email"><br/><br/>
+        <form:input path="email" type="text" name="email"></form:input>
+        <br/>
+        <form:errors path="email" cssClass="text-danger"></form:errors>
+        <br/><br/>
         Username:<br/>
-        <input type="text" name="username"><br/><br/>
+        <form:input path="username" type="text" name="username"></form:input>
+        <br/>
+        <form:errors path="username" cssClass="text-danger"></form:errors>
+        <br/><br/>
         Password:<br/>
-        <input type="password" name="password"><br/><br/>
+        <form:input path="password" type="password" name="password"></form:input>
+        <br/>
+        <form:errors path="password" cssClass="text-danger"></form:errors>
+        <br/><br/>
         Data di nascita:<br/>
-        <input type="date" name="dataNascita"><br/><br/>
+        <form:input path="dataNascita" type="date" name="dataNascita"></form:input>
+        <br/>
+        <form:errors path="dataNascita" cssClass="text-danger"></form:errors>
+        <br/><br/>
         <button type="submit">Aggiungi</button>
-    </form>
+
+    </form:form>
 </div>
 
 <hr>

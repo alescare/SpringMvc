@@ -10,8 +10,8 @@
 
 
         <form:form action="prenota_auto" method="get">
-            <button type="submit">Prenota auto</button>
-
+            <button type="submit">Prenota auto</button><br/>
+            <font color="#dc143c">${prenotazioneInCorsoMsg}</font>
         </form:form>
     </c:when>
 

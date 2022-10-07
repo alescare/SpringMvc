@@ -5,11 +5,11 @@ import javax.validation.ConstraintValidatorContext;
 import java.time.LocalDate;
 import java.time.temporal.ChronoField;
 
-public class AnnoImmatricolazioneValidator implements ConstraintValidator<AnnoImmatricolazione, String>
+public class AnnoImmatricolazioneValidator implements ConstraintValidator<AnnoImmatricolazione, Integer>
 {
 	@Override
-	public boolean isValid(String annoInserito, ConstraintValidatorContext theConstraintValidatorContext)
+	public boolean isValid(Integer annoInserito, ConstraintValidatorContext theConstraintValidatorContext)
 	{
-		return Integer.parseInt(annoInserito) > LocalDate.now().get(ChronoField.YEAR);
+		return (annoInserito != null) && (annoInserito <= LocalDate.now().get(ChronoField.YEAR));
 	}
 }

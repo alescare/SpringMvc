@@ -22,14 +22,14 @@ public class Prenotazione implements Serializable {
     private LocalDate dataFine;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "utente", nullable = false)
+    @JoinColumn(name = "utente")
     private Utente utente;
 
     @Column(name = "approvata")
     private boolean approvata;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "auto", nullable = false)
+    @JoinColumn(name = "auto")
     private Auto auto;
 
     public Prenotazione() {

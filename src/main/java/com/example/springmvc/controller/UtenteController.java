@@ -1,16 +1,19 @@
 package com.example.springmvc.controller;
 
+
 import com.example.springmvc.entities.Utente;
 import com.example.springmvc.service.AutoService;
 import com.example.springmvc.service.PrenotazioneService;
 import com.example.springmvc.service.UtenteService;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping("/utente")
@@ -33,24 +36,34 @@ public class UtenteController {
 
     @PostMapping(value = "/modifica_credenziali")
     public String modificaCredenziali(@RequestParam("username") String username, @RequestParam("password") String password, @RequestParam("email") String email, Authentication authentication) {
+
         Utente utente = utenteService.cercaUtentePerUsername(authentication.getName());
-        if (!("".equals(password) || password == null)) utente.setPassword(passwordEncoder.encode(password));
-        if (!("".equals(username))) utente.setUsername(username);
-        if (!("".equals(email))) utente.setEmail(email);
+        boolean usernameModificato = false;
+        if (StringUtils.isNotEmpty(password)){
+            utente.setPassword(passwordEncoder.encode(password));
+        }
+        if (StringUtils.isNotEmpty(username) && !(utente.getUsername().equals(username))){
+            utente.setUsername(username);
+            usernameModificato = true;
+        }
+        if (StringUtils.isNotEmpty(email)){
+            utente.setEmail(email);
+        }
         utenteService.salvaOAggiornaUtente(utente);
-        return "redirect:/login/form_logout";
+        if(usernameModificato){
+            return "redirect:/login/form_logout";
+        }
+        return "redirect:/utente/profilo";
     }
 
     @PostMapping(value = "/aggiungi_utente")
-    public String aggiungiUtente(@RequestParam("dataNascita") String dataNascita,
-                                 @RequestParam("username") String username,
-                                 @RequestParam("password") String password,
-                                 @RequestParam("nome") String nome,
-                                 @RequestParam("cognome") String cognome,
-                                 @RequestParam("email") String email) {
+    public String aggiungiUtente(@Valid @ModelAttribute("nuovoUtente") Utente nuovoUtente, BindingResult bindingResul, Model model) {
 
-        Utente nuovoUtente = new Utente(nome, cognome, LocalDate.parse(dataNascita),
-                username, passwordEncoder.encode(password), email);
+        if(bindingResul.hasErrors()){
+            model.addAttribute("listaUtenti", utenteService.listaUtenti());
+            return "gestioneUtenti";
+        }
+        nuovoUtente.setPassword(passwordEncoder.encode(nuovoUtente.getPassword()));
         utenteService.salvaOAggiornaUtente(nuovoUtente);
         return "redirect:/utente/gestione_utenti";
     }
@@ -93,9 +106,12 @@ public class UtenteController {
     }
 
     @GetMapping(value = "/prenota_auto")
-    public String vaiAPrenotaAuto(Authentication authentication) {
+    public String vaiAPrenotaAuto(Authentication authentication, Model model) {
         Utente utente = utenteService.cercaUtentePerUsername(authentication.getName());
-        if (prenotazioneService.prenotazioneInCorsoUtente(utente)) return "redirect:/utente/home";
+        if (prenotazioneService.prenotazioneInCorsoUtente(utente)){
+            model.addAttribute("prenotazioneInCorsoMsg", "Hai già una prenotazione in corso");
+            return home(authentication, model);
+        }
         return "redirect:/prenotazione/prenota_auto";
     }
 
