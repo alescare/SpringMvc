@@ -63,7 +63,7 @@ public class WebApplicationContextConfig implements WebMvcConfigurer {
 
         return bean;
     }
-    int date = LocalDate.now().get(ChronoField.YEAR);
+
     @Bean
     public MessageSource messageSource()
     {

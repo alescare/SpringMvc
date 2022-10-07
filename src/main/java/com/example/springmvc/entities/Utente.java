@@ -3,7 +3,9 @@ package com.example.springmvc.entities;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
-import javax.validation.constraints.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Set;
@@ -138,6 +140,6 @@ public class Utente implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Utente utente = (Utente) o;
-        return id.equals(id);
+        return id.equals(utente.id);
     }
 }

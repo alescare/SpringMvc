@@ -5,9 +5,7 @@ import com.example.springmvc.dao.AutoDao;
 import com.example.springmvc.dao.PrenotazioneDao;
 import com.example.springmvc.entities.Auto;
 import com.example.springmvc.entities.Prenotazione;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -52,15 +50,12 @@ public class AutoDaoImpl extends AbstractDao<Auto, Long> implements AutoDao {
     public List<Auto> listaAutoDisponibiliNelPeriodo(LocalDate dataInizio, LocalDate dataFine) {
 
         List<Auto> listaAutoDisponibili = getListaAuto();
-        System.out.println(listaAutoDisponibili.size());
 
         List<Prenotazione> listaPrenotazioni = prenotazioneDao.getListaPrenotazioniNelPeriodo(dataInizio, dataFine);
-        System.out.println(listaPrenotazioni);
 
         for (Prenotazione p : listaPrenotazioni) {
             listaAutoDisponibili.remove(p.getAuto());
         }
-        System.out.println(listaAutoDisponibili.size());
-        return listaAutoDisponibili;
+         return listaAutoDisponibili;
     }
 }

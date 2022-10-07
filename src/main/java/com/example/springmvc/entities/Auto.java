@@ -5,7 +5,6 @@ import com.example.springmvc.validator.AnnoImmatricolazione;
 import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.util.Objects;
 import java.util.Set;
@@ -67,11 +66,11 @@ public class Auto implements Serializable {
         this.modello = modello;
     }
 
-    public @Min(value = 1886, message = "{Min.Auto.annoImmatricolazione.validation}") Integer getAnnoImmatricolazione() {
+    public Integer getAnnoImmatricolazione() {
         return annoImmatricolazione;
     }
 
-    public void setAnnoImmatricolazione(@Min(value = 1886, message = "{Min.Auto.annoImmatricolazione.validation}") Integer annoImmatricolazione) {
+    public void setAnnoImmatricolazione(Integer annoImmatricolazione) {
         this.annoImmatricolazione = annoImmatricolazione;
     }
 
