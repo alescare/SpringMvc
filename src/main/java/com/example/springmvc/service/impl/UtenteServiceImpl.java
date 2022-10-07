@@ -52,6 +52,7 @@ public class UtenteServiceImpl implements UtenteService
 
     @Override
     public void cancellaUtentePerId(Long id) {
-        utenteDao.cancellaUtentePerId(id);
+        Utente utente = this.cercaUtentePerId(id);
+        utenteDao.cancellaUtente(utente);
     }
 }

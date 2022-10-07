@@ -24,7 +24,7 @@
                 <fmt:parseDate pattern="yyyy-MM-dd" value="${prenotazione.dataFine}" var="dataFineform"/>
                 <fmt:formatDate pattern="dd/MM/yyyy" value="${dataFineform}"/></td>
             <td>
-                <form:form action="prenotazioni_da_cancellare_${prenotazione.id}" method="post">
+                <form:form action="prenotazioni_da_cancellare/${prenotazione.id}" method="post">
                     <button type="submit">Cancella</button>
                 </form:form>
             </td>

@@ -1,10 +1,7 @@
 package com.example.springmvc.controller;
 
-import com.example.springmvc.entities.Utente;
-import com.example.springmvc.service.UtenteService;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -12,14 +9,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/")
 public class IndexController {
 
-    private final UtenteService utenteService;
-
-    public IndexController(UtenteService utenteService) {
-        this.utenteService = utenteService;
-    }
 
     @GetMapping
-    public String getWelcome(Authentication authentication, Model model) {
+    public String getWelcome(Authentication authentication) {
 
         if (authentication == null) {
             return "redirect:/login";

@@ -11,6 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name = "utente")
 public class Utente implements Serializable {
+
     @Id
     @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,7 +27,7 @@ public class Utente implements Serializable {
 
     @Column(name = "data_nascita")
     @NotNull(message = "{NotEmpty.Utente.dataNascita.validation}")
-    @DateTimeFormat(pattern="yyyy-MM-dd")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate dataNascita;
 
     @NotEmpty(message = "{NotEmpty.Utente.username.validation}")
@@ -45,7 +46,7 @@ public class Utente implements Serializable {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(mappedBy = "utente", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE,  mappedBy = "utente", orphanRemoval = true)
     private Set<Prenotazione> prenotazioni;
 
     public Utente() {

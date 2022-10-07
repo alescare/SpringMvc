@@ -68,6 +68,8 @@ public class HibernateConfig {
         jpaProperties.put("hibernate.dialect", env.getRequiredProperty("hibernate.dialect"));
         jpaProperties.put("hibernate.show_sql", env.getRequiredProperty("hibernate.show_sql"));
         jpaProperties.put("hibernate.format_sql", env.getRequiredProperty("hibernate.format_sql"));
+        jpaProperties.put("hibernate.hbm2ddl.auto", env.getRequiredProperty("hibernate.hbm2ddl.auto"));
+
 
         // Setting C3P0 properties
         jpaProperties.put(C3P0_MIN_SIZE, env.getProperty("hibernate.c3p0.min_size"));

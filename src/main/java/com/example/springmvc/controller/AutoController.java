@@ -22,43 +22,48 @@ public class AutoController {
         this.autoService = autoService;
     }
 
+    //MODELATTRIBUTE
+    @ModelAttribute("listaAuto")
+    public List<Auto> getListaAuto() {
+
+        return autoService.getListaAuto();
+    }
+
+    //GET
     @GetMapping(value = "/gestione_auto")
     public String gestisciAuto(Model model) {
 
-        model.addAttribute("autoDaModificare", new Auto());
-        model.addAttribute("listaAuto", autoService.getListaAuto());
-
-        return "gestioneAuto";
-    }
-
-    @PostMapping(value = "/gestione_modifiche_auto")
-    public String salvaModifiche(@Valid @ModelAttribute("autoDaModificare") Auto autoDaModificare, BindingResult bindingResult) {
-
-        if(bindingResult.hasErrors()){
-            return "gestioneAuto";
+        if(!(model.containsAttribute("autoDaModificare"))){
+            model.addAttribute("autoDaModificare", new Auto());
         }
-        autoService.salvaOAggiornaAuto(autoDaModificare);
-        return "redirect:/auto/gestione_auto";
-    }
-
-
-    @PostMapping(value = "/elimina_auto/{autoId}")
-    public String elimina(@PathVariable("autoId") String autoId) {
-        autoService.cancellaAuto(autoService.getAutoPerId(Long.parseLong(autoId)));
-        return "redirect:/auto/gestione_auto";
+        model.addAttribute("listaAuto", this.getListaAuto());
+        return "gestioneAuto";
     }
 
     @GetMapping(value = "/modifica_auto_{autoId}")
     public String modifica(@PathVariable("autoId") String autoId, Model model) {
+
         model.addAttribute("autoDaModificare", autoService.getAutoPerId(Long.parseLong(autoId)));
-        model.addAttribute("listaAuto", autoService.getListaAuto());
-        return "gestioneAuto";
+        return gestisciAuto(model);
     }
 
-    @ModelAttribute("listaAuto")
-    public List<Auto> getListaAuto(){
-        return autoService.getListaAuto();
+    //POST
+
+    @PostMapping(value = "/gestione_modifiche_auto")
+    public String salvaModifiche(@Valid @ModelAttribute("autoDaModificare") Auto autoDaModificare, BindingResult bindingResult, Model model) {
+
+        if (bindingResult.hasErrors()) {
+            return "gestioneAuto";
+        }
+        autoService.salvaOAggiornaAuto(autoDaModificare);
+        return gestisciAuto(model);
     }
 
+    @PostMapping(value = "/elimina_auto/{autoId}")
+    public String elimina(@PathVariable("autoId") String autoId, Model model) {
+
+        autoService.cancellaAuto(autoService.getAutoPerId(Long.parseLong(autoId)));
+        return gestisciAuto(model);
+    }
 
 }

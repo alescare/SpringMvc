@@ -37,7 +37,7 @@ public class Auto implements Serializable {
     @Column(name = "tipologia")
     private String tipologia;
 
-    @OneToMany(mappedBy = "auto", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE,  mappedBy = "auto")
     private Set<Prenotazione> prenotazioni;
 
     public Auto() {

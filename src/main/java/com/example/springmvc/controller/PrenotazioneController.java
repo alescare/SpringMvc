@@ -30,12 +30,42 @@ public class PrenotazioneController {
         this.utenteService = utenteService;
     }
 
+    //MODELATTRIBUTE
+    @ModelAttribute("listaPrenotazioniDaApprovare")
+    public List<Prenotazione> getPrenotazioniDaApprovare(){
+        return prenotazioneService.getPrenotazioniDaApprovare();
+    }
+    @ModelAttribute("listaPrenotazioni")
+    public List<Prenotazione> getPrenotazioni(){
+
+        return prenotazioneService.getPrenotazioni();
+    }
+
+
+    //GET
+
     @GetMapping(value = "/prenota_auto")
     public String vaiAPrenotaAuto(Model model) {
         model.addAttribute("dataInizioPeriodo", null);
         model.addAttribute("dataFinePeriodo", null);
         return "prenotaAuto";
     }
+
+    @GetMapping(value = "/prenotazioni_da_approvare")
+    public String prenotazioniDaApprovare(Model model) {
+
+        model.addAttribute("listaPrenotazioniDaApprovare", this.getPrenotazioniDaApprovare());
+        return "approvaPrenotazioni";
+    }
+
+    @GetMapping(value = "/prenotazioni_da_cancellare")
+    public String prenotazioniDaCancellare(Model model) {
+
+        model.addAttribute("listaPrenotazioni", this.getPrenotazioni());
+        return "cancellaPrenotazioni";
+    }
+
+    //POST
 
     @PostMapping(value = "/auto_disponibili")
     public String cercaAutoDisponibili(@RequestParam("dataInizioPeriodo") String dataInizioPeriodoForm, @RequestParam("dataFinePeriodo") String dataFinePeriodoForm, Model model) {
@@ -50,6 +80,21 @@ public class PrenotazioneController {
         return "prenotaAuto";
     }
 
+    @PostMapping(value = "/approva_prenotazione/{prenotazioneId}")
+    public String approvaPrenotazione(@PathVariable("prenotazioneId") String prenotazioneId, Model model) {
+        Prenotazione prenotazione = prenotazioneService.getPrenotazione(Long.parseLong(prenotazioneId));
+        prenotazione.setApprovata(true);
+        prenotazioneService.salvaOAggiornaPrenotazione(prenotazione);
+        return this.prenotazioniDaApprovare(model);
+    }
+
+    @PostMapping(value = "/prenotazioni_da_cancellare/{prenotazioneId}")
+    public String cancellaPrenotazione(@PathVariable("prenotazioneId") String prenotazioneId, Model model) {
+        Prenotazione prenotazione = prenotazioneService.getPrenotazione(Long.parseLong(prenotazioneId));
+        prenotazioneService.cancellaPrenotazione(prenotazione);
+        return this.prenotazioniDaCancellare(model);
+    }
+
     @PostMapping(value = "/prenota_auto/{autoId}")
     public String prenotazioneAuto(@PathVariable("autoId") String autoId, @RequestParam("dataInizioPeriodo") String dataInizioPeriodo, @RequestParam("dataFinePeriodo") String dataFinePeriodo, Authentication authentication) {
         Prenotazione nuovaPrenotazione = new Prenotazione();
@@ -59,36 +104,6 @@ public class PrenotazioneController {
         nuovaPrenotazione.setDataFine(LocalDate.parse(dataFinePeriodo));
         prenotazioneService.salvaOAggiornaPrenotazione(nuovaPrenotazione);
         return "redirect:/utente/profilo";
-    }
-
-
-    @GetMapping(value = "/prenotazioni_da_approvare")
-    public String prenotazioniDaApprovare(Model model) {
-
-        model.addAttribute("listaPrenotazioniDaApprovare", prenotazioneService.getPrenotazioniDaApprovare());
-        return "approvaPrenotazioni";
-    }
-
-
-    @PostMapping(value = "/approva_prenotazione/{prenotazioneId}")
-    public String approvaPrenotazione(@PathVariable("prenotazioneId") String prenotazioneId, Model model) {
-        Prenotazione prenotazione = prenotazioneService.getPrenotazione(Long.parseLong(prenotazioneId));
-        prenotazione.setApprovata(true);
-        prenotazioneService.salvaOAggiornaPrenotazione(prenotazione);
-        return "redirect:/prenotazione/prenotazioni_da_approvare";
-    }
-
-    @PostMapping(value = "/prenotazioni_da_cancellare/{prenotazioneId}")
-    public String cancellaPrenotazione(@PathVariable("prenotazioneId") String prenotazioneId, Model model) {
-        Prenotazione prenotazione = prenotazioneService.getPrenotazione(Long.parseLong(prenotazioneId));
-        prenotazioneService.cancellaPrenotazione(prenotazione);
-        return "redirect:prenotazione/cancellaPrenotazioni";
-    }
-
-    @GetMapping(value = "/prenotazioni_da_cancellare")
-    public String prenotazioniDaCancellare(Model model) {
-        model.addAttribute("listaPrenotazioni", prenotazioneService.getPrenotazioni());
-        return "cancellaPrenotazioni";
     }
 
 

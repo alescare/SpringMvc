@@ -21,15 +21,17 @@ public class Prenotazione implements Serializable {
     @Past(message = "{Past.Prenotazione.dataFine.validation}")
     private LocalDate dataFine;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "utente")
     private Utente utente;
 
     @Column(name = "approvata")
     private boolean approvata;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "auto")
+
+
+    @ManyToOne
+    @JoinColumn(name = "auto", nullable = true)
     private Auto auto;
 
     public Prenotazione() {
